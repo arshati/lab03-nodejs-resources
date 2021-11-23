@@ -1,47 +1,43 @@
-const productDAO = require('../db/productDAO');
-const searchService = function(callback) {
-    productDAO.findAll(function(err, rows) {
-        if (err) {
-            throw err;
-        }
-        if (rows.length == 0) {
-            console.log("No products!");
-        } else {
-            callback(null, rows);
-        }
-    });
-};
-const searchIDService = function(reference, callback) {
-    productDAO.findByID(reference, function(err, rows) {
-        if (err) {
-            throw err;
-        }
-        if (rows.length == 0) {
-            console.log("Unkown product!");
-            let product = null;
-            calback(null, product);
-        } else {
-            //rreturn the retrieved product 
-            callback(null, rows[0]);
-        }
-    });
-};
-const searchCategoryService = function(category, callback) {
-    productDAO.findByCategory(category, function(err, rows) {
-        if (err) {
-            throw err;
-        }
-        if (rows.length == 0) { //no products
-            console.log(`No product in category ${category}!`);
-            calback(null, rows);
-        } else {
-            //return the rows
-            callback(null, rows);
-        }
-    });
-};
+const database = require("./dbQuery");
+
+function findAll(callback) {
+  const selectProducts = "SELECT * from article; ";
+  database.getResult(selectProducts, function (err, rows) {
+    if (!err) {
+      callback(null, rows);
+    } else {
+      console.log(err);
+      throw err;
+    }
+  });
+}
+
+function findByID(reference, callback) {
+  const selectProducts = `SELECT * FROM article WHERE reference LIKE '${reference}';`;
+  database.getResult(selectProducts, function (err, rows) {
+    if (!err) {
+      callback(null, rows);
+    } else {
+      console.log(err);
+      throw err;
+    }
+  });
+}
+
+function findByCategory(category, callback) {
+  const selectProducts = `SELECT * from article where category like '${category}';`;
+  database.getResult(selectProducts, function (err, rows) {
+    if (!err) {
+      callback(null, rows);
+    } else {
+      console.log(err);
+      throw err;
+    }
+  });
+}
+
 module.exports = {
-    searchIDService,
-    searchService,
-    searchCategoryService
+  findAll,
+  findByID,
+  findByCategory,
 };

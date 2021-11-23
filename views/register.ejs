@@ -1,14 +1,17 @@
-<%- include('header'); -%> 
-  <div class="content">
-    <h2 id="welcome">Username:</h2> 
-    <input id="welcome"></div><input>
-    <h2 id="welcome">Password:</h2>
-    <input id="welcome"></div><input>
-    <h2 id="welcome">Name:</h2>
-    <input id="welcome"></div><input>
-    <h2 id="welcome">Contact Number:</h2>
-    <input id="welcome"></div><input>
-    <h2 id="welcome">Address:</h2>
-    <input id="welcome"></div><input>
-  </div>
+<%- include('header'); -%>
+<div class="content">
+  <form action="/api/register" method="post">
+    Username: <input type="text" name="username" id="username" /> Password:
+    <input type="password" id="password" name="password" /> Society:
+    <input type="text" name="society" id="society" /> Contact:
+    <input type="text" name="contact" id="contact" /> Address:
+    <input type="text" name="addres" id="addres" /> Zip Code:
+    <input type="text" name="zipcode" id="zipcode" /> City:
+    <input type="text" name="city" id="city" /> Phone:
+    <input type="text" name="phone" id="phone" /> Fax:
+    <input type="text" name="fax" id="fax" /> Max Outstanding:
+    <input type="text" name="max_outstanding" id="max_outstanding" />
+    <button>Register</button>
+  </form>
+</div>
 <%- include('footer'); -%>

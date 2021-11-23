@@ -1,44 +1,51 @@
-const express = require('express'); //creating app
-const app = express(); //make the app listen on port
-//send an HTTP response when receiving HTTP GET /
-app.use(express.static('public')); 
-app.get('/', (req, res) => {
-    res.sendFile('index.html', { root: __dirname }); 
-});
+const express = require("express");
+const session = require("express-session");
+
+//creating app
+const app = express();
+
+//send an HTTP response when receiving HTTP GET 
 
 //handling static HTML and EJS templates
-app.use(express.static('public')); 
-app.set('view engine', 'ejs'); 
-app.get('/', (req, res) => {
-    res.render('index'); //no need for ejs extension 
-});
+app.use(express.static("public"));
+app.set("view engine", "ejs");
 
-const port = process.argv[2] || process.env.PORT || 3000; 
-const server = app.listen(port, () => {
-console.log(`Cart app listening at http://localhost:${port}`); 
+//route for home
+app.get("/", (req, res) => {
+  res.render("index"); //no need for ejs extension
 });
 
 //route for contacts
-app.get('/contacts', (req, res) => {
-     res.render('contacts');
+app.get("/contacts", (req, res) => {
+  res.render("contacts");
 });
 
-//route for register
-app.get('/register',(req, res) => {
-    res.render('register');
+// using JSON and URL Encoded middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
-//route for login
-app.get('/login', (req, res) => {
-    res.render('login');
+app.get("/register", (req, res) => {
+  res.render("register");
 });
 
-//pass requests to the router middlewaree
-const router = require('./routes/apis')
+//pass requests to the router middleware
+const router = require("./routes/apis");
 app.use(router);
 
-//to be able to implement correctly the login/logout feature, you need to set up the session.
-const session = require('express-session');
-app.use(session({secret: 'some secret code'}));
-
-
+//make the app listen on port
+const port = process.argv[2] || process.env.PORT || 3000;
+const server = app.listen(port, () => {
+  console.log(`Cart app listening at http://localhost:${port}`);
+});
